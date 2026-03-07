@@ -1,0 +1,683 @@
+{
+  "info": {
+    "name": "Vagalume API",
+    "description": "Colección completa de endpoints para el MVP de Vagalume App. Importa este archivo en Postman y configura la variable `baseUrl` antes de empezar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Se rellena automáticamente al hacer login o register"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "propertyId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bookingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reviewId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 AUTH",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  pm.collectionVariables.set('userId', res.user._id);",
+                  "  console.log('✅ Token guardado:', res.token);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Tiene token', () => pm.expect(res.token).to.be.a('string'));",
+                  "pm.test('Tiene user', () => pm.expect(res.user).to.be.an('object'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Marta García\",\n  \"email\": \"marta@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"guest\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Crea una nueva cuenta. Guarda automáticamente el token en la variable de colección."
+          }
+        },
+        {
+          "name": "Register — Host",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  pm.collectionVariables.set('userId', res.user._id);",
+                  "  console.log('✅ Token host guardado:', res.token);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Xoán López\",\n  \"email\": \"xoan@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"host\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Registra un usuario con rol host."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  pm.collectionVariables.set('userId', res.user._id);",
+                  "  console.log('✅ Token guardado:', res.token);",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Tiene token', () => pm.expect(res.token).to.be.a('string'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"marta@gmail.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Inicia sesión. Guarda automáticamente el token en la variable de colección."
+          }
+        },
+        {
+          "name": "Login — Credenciales incorrectas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('Mensaje de error', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res.message).to.eql('Credenciales incorrectas');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"marta@gmail.com\",\n  \"password\": \"wrongpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Prueba de error — credenciales incorrectas. Espera 401."
+          }
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Cierra sesión. Recuerda eliminar el token en el cliente."
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏠 PROPERTIES",
+      "item": [
+        {
+          "name": "Buscar propiedades",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Respuesta es array', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties?checkIn=2026-07-01&checkOut=2026-07-05&capacity=2&type=entire",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties"],
+              "query": [
+                { "key": "checkIn", "value": "2026-07-01", "description": "Fecha de entrada" },
+                { "key": "checkOut", "value": "2026-07-05", "description": "Fecha de salida" },
+                { "key": "capacity", "value": "2", "description": "Nº mínimo de huéspedes" },
+                { "key": "type", "value": "entire", "description": "entire | room", "disabled": true },
+                { "key": "maxPrice", "value": "150", "description": "Precio máximo por noche", "disabled": true }
+              ]
+            },
+            "description": "Busca propiedades disponibles. Todos los query params son opcionales. Activa/desactiva los que necesites."
+          }
+        },
+        {
+          "name": "Ver propiedad por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Tiene _id', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res._id).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties/{{propertyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties", "{{propertyId}}"]
+            },
+            "description": "Devuelve el detalle completo de una propiedad. Actualiza la variable propertyId con un ID real."
+          }
+        },
+        {
+          "name": "Publicar propiedad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res._id) {",
+                  "  pm.collectionVariables.set('propertyId', res._id);",
+                  "  console.log('✅ propertyId guardado:', res._id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Casa en Baiona\",\n  \"description\": \"Casa con vistas al mar, jardín privado y barbacoa.\",\n  \"type\": \"entire\",\n  \"price\": 90,\n  \"capacity\": 4,\n  \"photos\": [\"https://example.com/foto1.jpg\"],\n  \"location\": {\n    \"ria\": \"Rías Baixas\",\n    \"address\": \"Baiona, Pontevedra\",\n    \"coords\": { \"lat\": 42.119, \"lng\": -8.844 }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties"]
+            },
+            "description": "Publica una nueva propiedad. Requiere rol host o dual. Guarda automáticamente el propertyId."
+          }
+        },
+        {
+          "name": "Editar propiedad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 100,\n  \"description\": \"Descripción actualizada. Casa con vistas al mar.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/properties/{{propertyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties", "{{propertyId}}"]
+            },
+            "description": "Actualiza campos concretos de una propiedad. Solo el propietario puede editarla."
+          }
+        },
+        {
+          "name": "Eliminar propiedad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/properties/{{propertyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["properties", "{{propertyId}}"]
+            },
+            "description": "Elimina una propiedad. Solo el propietario puede borrarla y no puede tener reservas activas."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 BOOKINGS",
+      "item": [
+        {
+          "name": "Mis reservas (como guest)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Respuesta es array', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/me?role=guest",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "me"],
+              "query": [
+                { "key": "role", "value": "guest" }
+              ]
+            },
+            "description": "Devuelve las reservas del usuario como huésped."
+          }
+        },
+        {
+          "name": "Mis reservas (como host)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/me?role=host",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "me"],
+              "query": [
+                { "key": "role", "value": "host" }
+              ]
+            },
+            "description": "Devuelve las reservas recibidas en las propiedades del usuario como anfitrión."
+          }
+        },
+        {
+          "name": "Solicitar reserva",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res._id) {",
+                  "  pm.collectionVariables.set('bookingId', res._id);",
+                  "  console.log('✅ bookingId guardado:', res._id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Status pending', () => {",
+                  "  pm.expect(res.status).to.eql('pending');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"property\": \"{{propertyId}}\",\n  \"checkIn\": \"2026-07-01\",\n  \"checkOut\": \"2026-07-05\",\n  \"guests\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"]
+            },
+            "description": "Solicita una reserva. Se crea con status pending. Requiere rol guest o dual. Guarda automáticamente el bookingId."
+          }
+        },
+        {
+          "name": "Confirmar reserva (host)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Status confirmed', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res.status).to.eql('confirmed');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "status"]
+            },
+            "description": "El anfitrión acepta la reserva. Requiere ser el host de la propiedad."
+          }
+        },
+        {
+          "name": "Rechazar reserva (host)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Status cancelled', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res.status).to.eql('cancelled');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}", "status"]
+            },
+            "description": "El anfitrión rechaza la reserva."
+          }
+        },
+        {
+          "name": "Cancelar reserva",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "{{bookingId}}"]
+            },
+            "description": "Cancela una reserva. Puede hacerlo el guest o el host."
+          }
+        }
+      ]
+    },
+    {
+      "name": "⭐ REVIEWS",
+      "item": [
+        {
+          "name": "Ver reseñas de una propiedad",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Respuesta es array', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reviews/property/{{propertyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["reviews", "property", "{{propertyId}}"]
+            },
+            "description": "Devuelve todas las reseñas de una propiedad. Ruta pública."
+          }
+        },
+        {
+          "name": "Escribir reseña",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res._id) {",
+                  "  pm.collectionVariables.set('reviewId', res._id);",
+                  "  console.log('✅ reviewId guardado:', res._id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Rating entre 1 y 5', () => {",
+                  "  pm.expect(res.rating).to.be.within(1, 5);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"property\": \"{{propertyId}}\",\n  \"booking\": \"{{bookingId}}\",\n  \"rating\": 5,\n  \"comment\": \"Casa preciosa, muy cerca de la playa. Repetiremos sin duda.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["reviews"]
+            },
+            "description": "Escribe una reseña. Solo es posible si tienes una reserva confirmada para esa propiedad y no has reseñado ya esa estancia."
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 USERS",
+      "item": [
+        {
+          "name": "Ver perfil de usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('No expone password', () => {",
+                  "  const res = pm.response.json();",
+                  "  pm.expect(res.password).to.be.undefined;",
+                  "  pm.expect(res.email).to.be.undefined;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            },
+            "description": "Devuelve el perfil público de un usuario. No expone email ni contraseña. Ruta pública."
+          }
+        }
+      ]
+    }
+  ]
+}

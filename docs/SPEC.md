@@ -166,7 +166,7 @@ vagalume.app/
 | F-05 | Editar y eliminar propiedad | 🔴 Must | Solo el propietario |
 | F-06 | Búsqueda por fechas y ubicación (Rías) | 🔴 Must | Filtro básico |
 | F-07 | Filtros: precio, tipo, capacidad | 🟡 Should | |
-| F-08 | Galería de fotos (upload múltiple) | 🔴 Must | Min 1 foto obligatoria |
+| F-08 | Galería de fotos (upload múltiple) | 🔴 Must | Min 3 fotos obligatorias |
 | F-09 | Mapa de ubicación | 🟢 Could | Leaflet.js o Google Maps — post-MVP |
 
 ### 6.3 Reservas

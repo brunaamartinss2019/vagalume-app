@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --env-file .env --watch app.js",
+    "seed": "node seeds.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "http-errors": "^2.0.1",
+    "mongoose": "^9.2.4",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.3.0"
+  }
+}
