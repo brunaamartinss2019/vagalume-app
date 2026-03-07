@@ -11,6 +11,14 @@ import Session from "../models/session.model.js";
  * Las rutas de registro y login están exentas de autenticación.
  */
 export async function checkAuth(req, res, next) {
+  if (req.method === "POST" && req.path === "/api/users") {
+    next();
+    return;
+  }
+  if (req.method === "POST" && req.path === "/api/sessions") {
+    next();
+    return;
+  }
 
   // Extraer el sessionId de la cookie mediante expresión regular
   const sessionId = req.headers.cookie?.match(/sessionId=([^;]+)/)?.[1];
