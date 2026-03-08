@@ -57,7 +57,7 @@ export async function logout(req, res) {
 //Ruta: GET /api/users/:id
 
 export async function detail(req, res) {
-    const user = await User.findById(req.params.id).select("-password");
+    const user = await User.findById(req.params.id);
     if(!user) {
         throw createHttpError(404, "User not found");
     }

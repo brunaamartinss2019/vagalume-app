@@ -26,7 +26,7 @@ async function seed() {
         const user = await User.create({
             name: faker.person.fullName(),
             email: faker.internet.email(),
-            password: faker.internet.password(),
+            password:"123456",
             role: roles[Math.floor(Math.random() * roles.length)],
             avatar: faker.image.avatar(),
             bio: faker.lorem.sentence(),

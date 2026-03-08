@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema(
       // Función de transformación para limpiar el JSON de salida
       transform: function (doc, ret) {
         delete ret._id; // Elimina el _id nativo de MongoDB (se usa el virtual "id" en su lugar)
+        delete ret.password;
       },
     },
   },
