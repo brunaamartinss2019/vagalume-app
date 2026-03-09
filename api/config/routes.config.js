@@ -2,12 +2,13 @@ import { Router } from "express";
 import createHttpError from "http-errors";
 import * as users from '../controllers/users.controller.js';
 import * as properties from '../controllers/properties.controller.js';
+import * as bookings from '../controllers/bookings.controller.js';
 
 const router = Router();
 
 //auth
 router.post('/users', users.create);
-router.post('/sessions', users.login); 
+router.post('/sessions', users.login);
 router.delete('/sessions', users.logout);
 
 //users
@@ -20,9 +21,15 @@ router.post("/properties", properties.create);
 router.patch("/properties/:id", properties.update);
 router.delete("/properties/:id", properties.remove);
 
+//bookings
+router.get("/bookings/me", bookings.list);
+router.post("/bookings", bookings.create);
+router.put("/bookings/:id/status", bookings.updateStatus);
+router.delete("/bookings/:id", bookings.remove);
+
 //404
 router.use((req, res) => {
-  throw new createHttpError(404, "Route Not Found");
+    throw new createHttpError(404, "Route Not Found");
 });
 
 export default router;

@@ -3,8 +3,8 @@ import { faker } from "@faker-js/faker";
 import "./config/db.config.js";
 
 import User from "./models/user.model.js";
-import Property from "./models/properties.model.js";
-import Booking from "./models/bookings.model.js";
+import Property from "./models/property.model.js";
+import Booking from "./models/booking.model.js";
 import Review from "./models/review.model.js";
 
 async function seed() {

@@ -3,7 +3,7 @@
 // Contiene la lógica de negocio para cada operación CRUD
 // ============================================
 
-import Property from "../models/properties.model.js";
+import Property from "../models/property.model.js";
 import createError from "http-errors";
 
 /**
@@ -12,8 +12,8 @@ import createError from "http-errors";
  * Devuelve un array JSON con todos las propriedades de la base de datos
  */
 export const list = async (req, res) => {
-  const properties = await Property.find().populate("host");
-  res.json(properties);
+    const properties = await Property.find().populate("host");
+    res.json(properties);
 };
 
 /**
@@ -22,14 +22,14 @@ export const list = async (req, res) => {
  * Devuelve un objeto JSON con los datos de la propriedad solicitada
  */
 export const detail = async (req, res) => {
-  // .populate("host") incluye los datos del usuario asociado a la propriedad
-  const properties = await Property.findById(req.params.id).populate("host");
+    // .populate("host") incluye los datos del usuario asociado a la propriedad
+    const properties = await Property.findById(req.params.id).populate("host");
 
-  if (properties === null) {
-    throw createError(404, "Property not found");
-  } else {
-    res.json(properties);
-  }
+    if (properties === null) {
+        throw createError(404, "Property not found");
+    } else {
+        res.json(properties);
+    }
 };
 
 /**
@@ -39,11 +39,11 @@ export const detail = async (req, res) => {
  * Devuelve la propriedad creada con código de estado 201 (Creado)
  */
 export const create = async (req, res) => {
-  const properties = await Property.create({
-    ...req.body,
-    host: req.session.user.id,
-  });
-  res.status(201).json(properties);
+    const properties = await Property.create({
+        ...req.body,
+        host: req.session.user.id,
+    });
+    res.status(201).json(properties);
 };
 
 /**
@@ -53,16 +53,16 @@ export const create = async (req, res) => {
  * Devuelve la propriedad actualizada (new: true) con validaciones activas
  */
 export const update = async (req, res) => {
-  const properties = await Property.findByIdAndUpdate(req.params.id, req.body, {
-    new: true, // Devuelve el documento actualizado en lugar del original
-    runValidators: true, // Ejecuta las validaciones del esquema al actualizar
-  });
+    const properties = await Property.findByIdAndUpdate(req.params.id, req.body, {
+        new: true, // Devuelve el documento actualizado en lugar del original
+        runValidators: true, // Ejecuta las validaciones del esquema al actualizar
+    });
 
-  if (properties == null) {
-    throw createError(404, "Property not found");
-  }
+    if (properties == null) {
+        throw createError(404, "Property not found");
+    }
 
-  res.json(properties);
+    res.json(properties);
 };
 
 /**
@@ -71,11 +71,11 @@ export const update = async (req, res) => {
  * Devuelve código de estado 204 (Sin contenido) tras la eliminación exitosa
  */
 export const remove = async (req, res) => {
-  const properties = await Property.findByIdAndDelete(req.params.id);
+    const properties = await Property.findByIdAndDelete(req.params.id);
 
-  if (properties == null) {
-    res.status(404).json({ error: "Property not found" });
-  } else {
-    res.status(204).end();
-  }
+    if (properties == null) {
+        res.status(404).json({ error: "Property not found" });
+    } else {
+        res.status(204).end();
+    }
 };

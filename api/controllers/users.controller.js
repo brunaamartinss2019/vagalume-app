@@ -17,7 +17,7 @@ export async function create(req, res) {
 export async function login(req, res) {
     const { email, password } = req.body;
 
-    if(!email || !password) {
+    if (!email || !password) {
         throw createHttpError(400, "missing email o password");
     }
     const user = await User.findOne({ email });
@@ -27,12 +27,12 @@ export async function login(req, res) {
 
     //verifica la contraseña
     const match = await user.checkPassword(password);
-    if(!match) {
+    if (!match) {
         throw createHttpError(401, "Invalid credentials");
     }
 
     //crea la sesion en MongoDB
-    const session = await Session.create({ user: user.id } );
+    const session = await Session.create({ user: user.id });
 
     //Envia la cookie al cliente
 
@@ -58,7 +58,7 @@ export async function logout(req, res) {
 
 export async function detail(req, res) {
     const user = await User.findById(req.params.id);
-    if(!user) {
+    if (!user) {
         throw createHttpError(404, "User not found");
     }
     res.json(user);

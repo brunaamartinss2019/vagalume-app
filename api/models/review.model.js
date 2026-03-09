@@ -3,29 +3,29 @@ import mongoose from "mongoose";
 const reviewSchema = new mongoose.Schema(
   {
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     property: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Property",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Property",
+      required: true,
     },
     booking: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
+      required: true,
     },
     rating: {
-        type: Number, 
-        required: true, 
-        min: 1,
-        max: 5,
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
     },
     comment: {
-        type: String,
-        maxLength: 250, 
+      type: String,
+      maxLength: 250,
     },
   },
   {
