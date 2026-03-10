@@ -12,9 +12,23 @@ import createError from "http-errors";
  * Devuelve un array JSON con todos las propriedades de la base de datos
  */
 export const list = async (req, res) => {
-    const properties = await Property.find().populate("host");
+    const { type, maxPrice, capacity } = req.query;
+
+    const filter = {};
+
+    if (type) {
+        filter.type = type; 
+    }
+
+    if (maxPrice) {
+        filter.price = { $lte: Number(maxPrice) };
+    }
+
+    const properties = await Property.find(filter).populate("host");
     res.json(properties);
 };
+
+
 
 /**
  * Obtener el detalle de una propriedad por su ID
