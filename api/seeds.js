@@ -112,13 +112,6 @@ async function seed() {
       comment: faker.lorem.sentences(2),
     });
 
-    // Recalcula rating medio de la propiedad
-    const allReviews = await Review.find({ property: booking.property });
-    const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
-    await Property.findByIdAndUpdate(booking.property, {
-      rating: Math.round(avgRating * 10) / 10,
-    });
-
     console.log(`${review.rating}⭐ — ${review.comment.substring(0, 40)}...`);
   }
   console.log("seeding reviews... [OK]");

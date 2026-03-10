@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import * as users from '../controllers/users.controller.js';
 import * as properties from '../controllers/properties.controller.js';
 import * as bookings from '../controllers/bookings.controller.js';
+import * as reviews from '../controllers/review.controller.js';
 
 const router = Router();
 
@@ -26,6 +27,10 @@ router.get("/bookings/me", bookings.list);
 router.post("/bookings", bookings.create);
 router.put("/bookings/:id/status", bookings.updateStatus);
 router.delete("/bookings/:id", bookings.remove);
+
+//reviews
+router.get("/reviews/property/:id", reviews.list);
+router.post("/reviews/", reviews.create);
 
 //404
 router.use((req, res) => {
