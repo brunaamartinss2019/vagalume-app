@@ -24,6 +24,8 @@ export function errorHandler(err, req, res, next) {
     return;
   }
 
+  // Cualquier otro error no contemplado anteriormente
+  // Devuelve 500 Internal Server Error como respuesta genérica
   console.error(err);
   res.status(500).json({ message: "Internal server error" });
 }

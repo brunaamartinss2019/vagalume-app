@@ -4,33 +4,34 @@ import * as users from '../controllers/users.controller.js';
 import * as properties from '../controllers/properties.controller.js';
 import * as bookings from '../controllers/bookings.controller.js';
 import * as reviews from '../controllers/review.controller.js';
+import { checkRole } from "../middlewares/role.middleware.js";
 
 const router = Router();
 
-//auth
+//Auth
 router.post('/users', users.create);
 router.post('/sessions', users.login);
 router.delete('/sessions', users.logout);
 
-//users
+//Users
 router.get("/users/:id", users.detail);
 
-//properties
+//Properties
 router.get("/properties", properties.list);
 router.get("/properties/:id", properties.detail);
-router.post("/properties", properties.create);
-router.patch("/properties/:id", properties.update);
-router.delete("/properties/:id", properties.remove);
+router.post("/properties", checkRole("host", "dual"), properties.create);
+router.patch("/properties/:id", checkRole("guest", "dual"), properties.update);
+router.delete("/properties/:id", checkRole("host"), properties.remove);
 
-//bookings
+//Bookings
 router.get("/bookings/me", bookings.list);
-router.post("/bookings", bookings.create);
-router.put("/bookings/:id/status", bookings.updateStatus);
+router.post("/bookings", checkRole("guest", "dual"), bookings.create);
+router.put("/bookings/:id/status", checkRole("host"), bookings.updateStatus);
 router.delete("/bookings/:id", bookings.remove);
 
-//reviews
+//Reviews
 router.get("/reviews/property/:id", reviews.list);
-router.post("/reviews/", reviews.create);
+router.post("/reviews", checkRole("guest", "dual"), reviews.create);
 
 //404
 router.use((req, res) => {
