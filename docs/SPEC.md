@@ -266,21 +266,21 @@ vagalume.app/
 │ createdAt    Date                            │
 └─────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────┐
-│ PROPERTIES                                   │
-├─────────────────────────────────────────────┤
-│ _id          ObjectId                        │
-│ host         Ref → Users                     │
-│ title        String                          │
-│ description  String                          │
-│ type         Enum: entire | room             │
-│ location     { ria, address, coords }        │
-│ price        Number (€/noche)                │
-│ capacity     Number (max huéspedes)          │
-│ photos       [String] (URLs)                 │
-│ rating       Number (calculado)              │
-│ createdAt    Date                            │
-└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────  ┐
+│ PROPERTIES                                    │
+├─────────────────────────────────────────────  ┤
+│ _id          ObjectId                         │
+│ host         Ref → Users                      │
+│ title        String                           │
+│ description  String                           │
+│ type         Enum: entire | room              │
+│ location     { ria, address, coords }         │
+│ price        Number (€/noche)                 │
+│ capacity     Number (max huéspedes)           │
+│ photos       [String] (URLs)                  │
+│ rating       Number(gestionado por el cliente)|
+│ createdAt    Date                             │
+└─────────────────────────────────────────────  ┘
 
 ┌─────────────────────────────────────────────┐
 │ BOOKINGS                                     │
