@@ -63,3 +63,7 @@ export async function detail(req, res) {
     }
     res.json(user);
 }
+
+export async function profile (req, res) {
+    res.json(req.session.user);
+}

@@ -14,6 +14,7 @@ router.post('/sessions', users.login);
 router.delete('/sessions', users.logout);
 
 //Users
+router.get("/users/me", users.profile);
 router.get("/users/:id", users.detail);
 
 //Properties
