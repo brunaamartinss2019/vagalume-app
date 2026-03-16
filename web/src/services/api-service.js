@@ -26,6 +26,10 @@ export function logout() {
 
 // users
 
+export function getProfile() {
+    return http.get("/users/me");
+}
+
 export function getUser(id) {
     return http.get(`/users/${id}`);
 }
