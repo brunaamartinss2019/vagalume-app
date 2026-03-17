@@ -77,10 +77,10 @@ export function deleteBooking(id) {
 //Reviews
 
 export function getPropertyReviews(propertyId) {
-    return http.get(`/reviews/property/${propertyId}`);
+    return http.get(`/properties/${propertyId}/reviews`);
 }
 
 export function createReview(data) {
-    return http.post("/reviews", data);
+    return http.post(`/properties/${propertyId}/reviews`, data);
 }
 
