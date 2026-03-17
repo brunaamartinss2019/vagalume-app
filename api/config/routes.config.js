@@ -21,18 +21,18 @@ router.get("/users/:id", users.detail);
 router.get("/properties", properties.list);
 router.get("/properties/:id", properties.detail);
 router.post("/properties", checkRole("host", "dual"), properties.create);
-router.patch("/properties/:id", checkRole("guest", "dual"), properties.update);
+router.patch("/properties/:id", checkRole("host", "dual"), properties.update);
 router.delete("/properties/:id", checkRole("host"), properties.remove);
 
 //Bookings
 router.get("/bookings/me", bookings.list);
 router.post("/bookings", checkRole("guest", "dual"), bookings.create);
-router.put("/bookings/:id/status", checkRole("host"), bookings.updateStatus);
+router.put("/bookings/:id/status", checkRole("host", "dual"), bookings.updateStatus);
 router.delete("/bookings/:id", bookings.remove);
 
 //Reviews
-router.get("/reviews/property/:id", reviews.list);
-router.post("/reviews", checkRole("guest", "dual"), reviews.create);
+router.get("/properties/:id/reviews", reviews.list);
+router.post("/properties/:id/reviews", checkRole("guest", "dual"), reviews.create);
 
 //404
 router.use((req, res) => {

@@ -17,7 +17,7 @@ export const list = async (req, res) => {
     const filter = {};
 
     if (type) {
-        filter.type = type; 
+        filter.type = type;
     }
 
     if (maxPrice) {
@@ -27,8 +27,6 @@ export const list = async (req, res) => {
     const properties = await Property.find(filter).populate("host");
     res.json(properties);
 };
-
-
 
 /**
  * Obtener el detalle de una propriedad por su ID
@@ -67,16 +65,22 @@ export const create = async (req, res) => {
  * Devuelve la propriedad actualizada (new: true) con validaciones activas
  */
 export const update = async (req, res) => {
-    const properties = await Property.findByIdAndUpdate(req.params.id, req.body, {
+    const property = await Property.findById(req.params.id);
+
+    if (property === null) {
+        throw createError(404, "Property not found");
+    }
+
+    if (property.host.toString() !== req.session.user.id) {
+        throw createError(403, "Forbidden");
+    }
+
+    const update = await Property.findByIdAndUpdate(req.params.id, req.body, {
         new: true, // Devuelve el documento actualizado en lugar del original
         runValidators: true, // Ejecuta las validaciones del esquema al actualizar
     });
 
-    if (properties == null) {
-        throw createError(404, "Property not found");
-    }
-
-    res.json(properties);
+    res.json(update);
 };
 
 /**
@@ -85,11 +89,16 @@ export const update = async (req, res) => {
  * Devuelve código de estado 204 (Sin contenido) tras la eliminación exitosa
  */
 export const remove = async (req, res) => {
-    const properties = await Property.findByIdAndDelete(req.params.id);
+    const property = await Property.findById(req.params.id);
 
-    if (properties == null) {
-        res.status(404).json({ error: "Property not found" });
-    } else {
-        res.status(204).end();
+    if (property === null) {
+        throw createError(404, "Property not found");
     }
+
+    if (property.host.toString() !== req.session.user.id) {
+        throw createError(403, "Forbidden");
+    }
+
+    await Property.findByIdAndDelete(req.params.id);
+    res.status(204).end();
 };
