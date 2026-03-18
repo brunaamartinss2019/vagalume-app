@@ -4,12 +4,13 @@ import SearchPage from "./pages/search-page";
 import PropertyDetailPage from "./pages/property-detail";
 import LoginPage from "./pages/login-page";
 import RegisterPage from "./pages/register-page";
+import Layout from "./components/layout";
 
 
 function App() {
  
   return (
-  
+    <Layout>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/buscar" element={<SearchPage />} />
@@ -17,7 +18,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registro" element={<RegisterPage />} />
     </Routes> 
-
+    </Layout>
   );
 }
 
