@@ -65,13 +65,14 @@ export const create = async (req, res) => {
  * Devuelve la propriedad actualizada (new: true) con validaciones activas
  */
 export const update = async (req, res) => {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.id);    //busco la propriedad por Id
 
     if (property === null) {
-        throw createError(404, "Property not found");
+        throw createError(404, "Property not found"); //si no existe, devuelve un error 404
     }
 
-    if (property.host.toString() !== req.session.user.id) {
+    if (property.host.toString() !== req.session.user.id) { //comprueba que el host de la propriedad es el mismo que esta haciendo la petición
+        //property.host es un objecto de mongoDB por eso hay que transformar en string
         throw createError(403, "Forbidden");
     }
 
