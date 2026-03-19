@@ -6,7 +6,7 @@ function Footer() {
                     🌊 Vagalume
                 </h5>
                 <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', marginBottom: '0' }}>
-                   Alóxate nas Rías galegas, coma na casa. · © 2026
+                  Alójate en las Rías gallegas, como en casa · © 2026
                 </p>
             </div>
         </footer>
