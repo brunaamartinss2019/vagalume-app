@@ -1,3 +1,4 @@
+import Footer from "./footer";
 import Navbar from "./navbar";
 
 function Layout({ children }){
@@ -7,6 +8,7 @@ function Layout({ children }){
         <main className="container mt-4" style={{ maxWidth: '1000px' }}>
         {children}
         </main>
+        <Footer />
      
         </>
     );

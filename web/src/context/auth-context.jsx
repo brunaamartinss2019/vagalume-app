@@ -24,8 +24,6 @@ export function AuthContextProvider({ children }) {
         fetchProfile();
     }, []);
 
-    if (loading) return <></>
-
     async function userLogin(credentials) {
         const user = await login(credentials);
         setUser(user);
@@ -37,6 +35,8 @@ export function AuthContextProvider({ children }) {
         setUser(null);
         navigate("/login");
     }
+
+    if (loading) return <></>
 
     if (
     user === null &&
