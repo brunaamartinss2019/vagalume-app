@@ -8,6 +8,7 @@ export function AuthContextProvider({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchProfile() {
@@ -15,11 +16,15 @@ export function AuthContextProvider({ children }) {
                 const user = await getProfile();
                 setUser(user);
             } catch(err) {
-                navigate("/login");
+               
+            } finally {
+                setLoading(false);
             }
         }
         fetchProfile();
     }, []);
+
+    if (loading) return <></>
 
     async function userLogin(credentials) {
         const user = await login(credentials);
@@ -34,9 +39,11 @@ export function AuthContextProvider({ children }) {
     }
 
     if (
-        user === null &&
+    user === null &&
     location.pathname !== "/login" &&
-    location.pathname !== "/registro"
+    location.pathname !== "/registro" &&
+    location.pathname !== "/"
+
   ) {
     return <></>;
   }
