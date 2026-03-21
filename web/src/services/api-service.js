@@ -58,8 +58,8 @@ export function deleteProperty(id) {
 
 //Bookings
 
-export function getMyBookings() {
-    return http.get("/bookings/me");
+export function getMyBookings(role) {
+    return http.get("/bookings/me", { params: role ? { role } : {} });
 }
 
 export function createBooking(data) {

@@ -10,16 +10,35 @@ function MyBookingsPage() {
     //cargamos las reservas al montar el componente
     useEffect(() => {
         async function fetchBookings() {
-            //si el usuario es host o dual, cargamos también las reservas recibidas
-            const guestBookings = await getMyBookings();
-            setBookings(guestBookings);
+            if (user.role === "host") {
+                //si es el host, cargamos las reservas recibidas en sus propiedades
+                const hostBookings = await getMyBookings("host");
+                setBookings(hostBookings);
+            } else if (user.role === "dual") {
+                //si es dual, cargamos ambas
+                const guestBookings = await getMyBookings();
+                const hostBookings = await getMyBookings("host");
+                setBookings([...guestBookings, ...hostBookings]);
+            } else {
+                //si es guest, solo sus reservas
+                const guestBookings = await getMyBookings();
+                setBookings(guestBookings);
+            }
         }
         fetchBookings();
     }, []);
+    //confirmar o rechazar una reserva como host
 
+    async function handleUpdateStatus(bookingId, status) {
+        await updateBookingStatus(bookingId, status);
+        // Actualizamos el estado local sin recargar la página
+        setBookings(bookings.map(b =>
+            b.id === bookingId ? { ...b, status } : b
+        ));
+    }
     //cancelar una reserva como guest
     async function handleCancel(bookingId) {
-        await deleteBookingId(bookingId);
+        await deleteBooking(bookingId);
         //actualizamos el estado local sin recargar la pagina
         setBookings(bookings.map(b =>
             b.id === bookingId ? { ...b, status: "cancelled" } : b
@@ -31,7 +50,7 @@ function MyBookingsPage() {
         const styles = {
             pending: { backgroundColor: '#fef3c7', color: '#92400e' },
             confirmed: { backgroundColor: '#d1fae5', color: '#065f46' },
-            cancelled: { backgroundColor: '#d1fae5', color: '#065f46' },
+            cancelled: { backgroundColor: '#fee2e2', color: '#991b1b' },
         };
         const labels = {
             pending: 'Pendiente',
@@ -80,7 +99,12 @@ function MyBookingsPage() {
                         <div className="flex-grow-1">
                             <div className="d-flex justify-content-between align-items-start">
                                 <h6 className="fw-bold mb-1">
-                                    {bookings.property?.title || 'Propiedad no disponible'}
+                                    <Link
+                                        to={`/propiedad/${bookings.property?.id}`}
+                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                    >
+                                        {bookings.property?.title || 'Propiedad no disponible'}
+                                    </Link>
                                 </h6>
                                 {getStatusBadge(bookings.status)}
                             </div>
@@ -95,16 +119,59 @@ function MyBookingsPage() {
                             </p>
                         </div>
 
-                        {/* Botón cancelar — solo si está pendiente o confirmada */}
-                        {bookings.status !== "cancelled" && (
-                            <button
-                                className="btn btn-sm"
-                                style={{ border: '1px solid #dc3545', color: '#dc3545', borderRadius: '8px' }}
-                                onClick={() => handleCancel(bookings.id)}
-                            >
-                                Cancelar
-                            </button>
-                        )}
+                        {/* Botones según el rol del usuario */}
+                        <div className="d-flex flex-column gap-2">
+                            {/* Si es host y la reserva está pendiente, puede confirmar o rechazar */}
+                            {user.role === "host" && bookings.status === "pending" && (
+                                <>
+                                    <button
+                                        className="btn btn-sm fw-bold text-white"
+                                        style={{ backgroundColor: '#2563a8', borderRadius: '8px' }}
+                                        onClick={() => handleUpdateStatus(bookings.id, "confirmed")}
+                                    >
+                                        Confirmar
+                                    </button>
+                                    <button
+                                        className="btn btn-sm fw-bold"
+                                        style={{ border: '1px solid #dc3545', color: '#dc3545', borderRadius: '8px' }}
+                                        onClick={() => handleUpdateStatus(bookings.id, "cancelled")}
+                                    >
+                                        Rechazar
+                                    </button>
+                                </>
+                            )}
+
+                            {/* Si es guest y la reserva no está cancelada, puede cancelar */}
+                            {user.role === "guest" && bookings.status !== "cancelled" && (
+                                <button
+                                    className="btn btn-sm"
+                                    style={{ border: '1px solid #dc3545', color: '#dc3545', borderRadius: '8px' }}
+                                    onClick={() => handleCancel(bookings.id)}
+                                >
+                                    Cancelar
+                                </button>
+                            )}
+
+                            {/* Si es dual, puede confirmar/rechazar como host y cancelar como guest */}
+                            {user.role === "dual" && bookings.status === "pending" && (
+                                <>
+                                    <button
+                                        className="btn btn-sm fw-bold text-white"
+                                        style={{ backgroundColor: '#2563a8', borderRadius: '8px' }}
+                                        onClick={() => handleUpdateStatus(bookings.id, "confirmed")}
+                                    >
+                                        Confirmar
+                                    </button>
+                                    <button
+                                        className="btn btn-sm fw-bold"
+                                        style={{ border: '1px solid #dc3545', color: '#dc3545', borderRadius: '8px' }}
+                                        onClick={() => handleUpdateStatus(bookings.id, "cancelled")}
+                                    >
+                                        Rechazar
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}
