@@ -12,7 +12,7 @@ export function cors(req, res, next) {
 
   res.set("Access-Control-Allow-Headers", "content-type");
 
-  res.set("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS");
+  res.set("Access-Control-Allow-Methods", "GET,POST, PUT, PATCH,DELETE,OPTIONS");
 
   // Las peticiones preflight (OPTIONS) se responden inmediatamente sin pasar a las rutas
   if (req.method === "OPTIONS") {
