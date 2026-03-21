@@ -42,7 +42,8 @@ export function AuthContextProvider({ children }) {
     user === null &&
     location.pathname !== "/login" &&
     location.pathname !== "/registro" &&
-    location.pathname !== "/"
+    location.pathname !== "/" &&
+    !location.pathname.startsWith("/propiedad/")
 
   ) {
     return <></>;

@@ -17,7 +17,7 @@ function PropertyList() {
         <div className='row row-cols-1 row-cols-md-3 g-4'>
             {properties.map((property) => (
                 <div key={property.id} className='col'>
-                    <Link to={`/propriedad/${property.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
+                    <Link to={`/propiedad/${property.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
             <div className="card h-100 border-0 shadow-sm property-card">
                             
                             {/* Foto */}
