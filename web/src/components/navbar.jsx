@@ -119,11 +119,11 @@ function Navbar() {
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <Link className="dropdown-item" to="/dashboard/reservas">Mis reservas</Link>
+                                        <Link className="dropdown-item" to="/dashboard/mis-reservas">Mis reservas</Link>
                                     </li>
                                     {(user.role === "host" || user.role === "dual") && (
                                         <li>
-                                            <Link className="dropdown-item" to="/dashboard/propiedades">Mis propiedades</Link>
+                                            <Link className="dropdown-item" to="/dashboard/mis-propiedades">Mis propiedades</Link>
                                         </li>
                                     )}
                                     <li><hr className="dropdown-divider" /></li>
