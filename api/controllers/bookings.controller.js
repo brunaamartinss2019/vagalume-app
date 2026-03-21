@@ -46,6 +46,18 @@ export const create = async (req, res) => {
         throw createError(404, "Property not found");
     }
 
+    //verifica que no existe ya una reserva confirmada que coincidan  con las fechas pedidas
+    const conflict = await Booking.findOne({
+        property: req.body.property,
+        status: "confirmed",
+        checkIn: { $lt: new Date(req.body.checkOut) },
+        checkOut: { $gt: new Date(req.body.checkIn) }
+    });
+
+    if (conflict) {
+        throw createError(400, "Property not available for these dates");
+    }
+    
     const checkIn = new Date(req.body.checkIn);
     const checkOut = new Date(req.body.checkOut);
     const nights = Math.round((checkOut - checkIn) / 86400000);
