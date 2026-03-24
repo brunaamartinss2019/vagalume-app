@@ -12,7 +12,7 @@ import createError from "http-errors";
  * Devuelve un array JSON con todos las propriedades de la base de datos
  */
 export const list = async (req, res) => {
-    const { type, maxPrice, capacity } = req.query;
+    const { type, maxPrice, capacity, ria } = req.query;
 
     const filter = {};
 
@@ -24,8 +24,22 @@ export const list = async (req, res) => {
         filter.price = { $lte: Number(maxPrice) };
     }
 
-    const properties = await Property.find(filter).populate("host");
-    res.json(properties);
+    //filtro por capacidad(personas) y busco la propiedad que tengan igual o más capacidad de la solicitada
+    if (capacity) {
+        filter.capacity = { $gte: Number(capacity) };
+    }
+    //uso regex 'i' para que si escribes "aldan" encuentro Aldán
+    if (ria) {
+        filter["location.ria"] = new RegExp(ria, "i");
+    }
+
+    try {
+        const properties = await Property.find(filter).populate("host");
+        res.json(properties);
+    } catch (error) {
+        // al ser una función async, si hay error hay que manejarlo
+        res.status(500).json({message: "Error al buscar propiedades" });
+    }
 };
 
 /**
