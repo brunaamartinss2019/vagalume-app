@@ -1,22 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth-context";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-function Navbar() {
+function Navbar() { 
     const { user, userLogout } = useAuth();
-    const dropDown = useRef();
+    //const dropDown = useRef();
     const navigate = useNavigate();
     const [destino, setDestino] = useState("");
     const [checkin, setCheckin] = useState("");
     const [checkout, setCheckout] = useState("");
     const [viajeros, setViajeros] = useState("");
 
-    useEffect(() => {
+    /*useEffect(() => {
         dropDown.current && new window.bootstrap.Dropdown(dropDown.current);
-    }, []);
+    }, []);*/
 
     function handleSearch(e) {
         e.preventDefault();
+
+        const today = new Date().toISOString().split("T")[0];
+
+        if (checkin && checkout < today) {
+            alert("La fecha de entrada no puede ser anterior al dia de hoy");
+            return;
+        }
+        if (checkin && checkout && checkout <= checkin) {
+            alert("La fecha de salida debe ser posterior a la entrada");
+            return;
+        }
         const params = new URLSearchParams();
         if (destino) params.append("ria", destino);
         if (checkin) params.append("checkIn", checkin);
@@ -112,7 +123,7 @@ function Navbar() {
                                     href="#"
                                     role="button"
                                     data-bs-toggle="dropdown"
-                                    ref={dropDown}
+                                    //ref={dropDown}
                                     >
                                 
                                     {user.name}

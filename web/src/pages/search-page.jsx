@@ -11,7 +11,7 @@ function SearchPage() {
         // Convertimos los parámetros de la URL (?ria=Aldan...) en objeto
         const params = Object.fromEntries(searchParams.entries());
 
-        async function fetch() {
+        async function fetchProperties() {
             setLoading(true);
             try {
                 const data = await getProperties(params);
@@ -22,7 +22,7 @@ function SearchPage() {
                 setLoading(false);
             }
         }
-        fetch();
+        fetchProperties();
     }, [searchParams]);
 
     return (

@@ -36,19 +36,17 @@ export function AuthContextProvider({ children }) {
         navigate("/login");
     }
 
-    if (loading) return <></>
+    if (loading) return <></>;
+
+    const privateRoutes = ["/dashboard"];
+    const isPrivate = privateRoutes.some(route => location.pathname.startsWith(route));
 
     if (
-    user === null &&
-    location.pathname !== "/login" &&
-    location.pathname !== "/registro" &&
-    location.pathname !== "/" &&
-    !location.pathname.startsWith("/propiedad/")
-
-  ) {
-    return <></>;
-  }
-
+    user === null && isPrivate) {
+        navigate("/login");
+        return <></>;
+    }
+    
   return (
     <AuthContext.Provider value={{ user, userLogin, userLogout }}>
         {children}

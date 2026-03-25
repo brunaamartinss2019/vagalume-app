@@ -80,7 +80,7 @@ export function getPropertyReviews(propertyId) {
     return http.get(`/properties/${propertyId}/reviews`);
 }
 
-export function createReview(data) {
+export function createReview(propertyId, data) {
     return http.post(`/properties/${propertyId}/reviews`, data);
 }
 
