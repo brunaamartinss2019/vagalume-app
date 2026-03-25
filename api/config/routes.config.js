@@ -22,7 +22,7 @@ router.get("/properties", properties.list);
 router.get("/properties/:id", properties.detail);
 router.post("/properties", checkRole("host", "dual"), properties.create);
 router.patch("/properties/:id", checkRole("host", "dual"), properties.update);
-router.delete("/properties/:id", checkRole("host"), properties.remove);
+router.delete("/properties/:id", checkRole("host", "dual"), properties.remove);
 
 //Bookings
 router.get("/bookings/me", bookings.list);
