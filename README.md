@@ -161,7 +161,7 @@ Inspired by Airbnb but with a local focus, more accessible prices and a close-kn
 
 | Home | Search | Booking |
 |------|--------|---------|
-| ![home](#) | ![search](#) | ![booking](#) |
+| ![home](https://i.ibb.co/M5JJBKgq/home.jpg) | ![search](https://i.ibb.co/9mWwDGMD/foto.jpg) | ![booking](https://i.ibb.co/ZR2qpJB5/booking.jpg) |
 
 ---
 
