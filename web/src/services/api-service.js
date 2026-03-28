@@ -74,6 +74,15 @@ export function deleteBooking(id) {
     return http.delete(`/bookings/${id}`);
 }
 
+//Messages
+export function getMessages(bookingId) {
+    return http.get(`/bookings/${bookingId}/messages`);
+}
+
+export function sendMessage(bookingId, text) {
+    return http.post(`/bookings/${bookingId}/messages`, { text });
+}
+
 //Reviews
 
 export function getPropertyReviews(propertyId) {
