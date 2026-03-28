@@ -1,9 +1,9 @@
 # Vagalume App — Product Requirements Document (PRD)
 
-> **Versión:** 1.1 — MVP (simplificado Bootcamp)  
+> **Versión:** 1.2 — MVP actualizado  
 > **Fecha:** Marzo 2026  
 > **Stack:** MERN (MongoDB · Express · React · Node.js)  
-> **Estado:** En desarrollo
+> **Estado:** MVP completado
 
 ---
 
@@ -28,7 +28,7 @@
 
 **Vagalume** es una plataforma web de gestión de alquiler vacacional especializada en las **Rías Galegas** (Galicia, España). Inspirada en el modelo de Airbnb pero con foco local y precios más accesibles, conecta a propietarios de alojamientos de la zona con viajeros que buscan experiencias auténticas en el entorno atlántico gallego.
 
-> **Tagline propuesto:** *"Alójate en las Rías, como en casa."*
+> **Tagline:** *"Alójate en las Rías, como en casa."*
 
 ### Propuesta de valor diferencial
 
@@ -105,20 +105,22 @@ Mercado de alquiler vacacional rural/costero: infraservido digitalmente
 
 ```
 ACTOR: Huésped (sin registrar)
-  UC-01  Buscar propiedades por fecha y ubicación
+  UC-01  Buscar propiedades por ría, capacidad, precio y tipo
   UC-02  Ver disponibilidad de alojamiento completo o por habitación
   UC-03  Ver ficha de propiedad con fotos, descripción y valoraciones
 
 ACTOR: Huésped (registrado)
-  UC-04  Realizar reserva de alojamiento
+  UC-04  Realizar reserva de alojamiento con mensaje opcional al anfitrión
   UC-05  Dejar comentario y valoración (1-5) tras estancia
-  UC-06  Gestionar sus reservas activas/pasadas
-  UC-07  Cerrar sesión
+  UC-06  Gestionar sus reservas activas/pasadas con filtro por estado
+  UC-07  Chatear con el anfitrión desde el dashboard de reservas
+  UC-08  Cerrar sesión
 
 ACTOR: Anfitrión (registrado)
-  UC-08  Publicar nueva propiedad (fotos, descripción, precio, tipo)
-  UC-09  Ver reservas recibidas y aceptar / rechazar
-  UC-10  Editar o eliminar su propiedad
+  UC-09  Publicar nueva propiedad (fotos, descripción, precio, tipo)
+  UC-10  Ver reservas recibidas y aceptar / rechazar
+  UC-11  Editar o eliminar su propiedad
+  UC-12  Chatear con el huésped desde el dashboard de reservas
 ```
 
 ---
@@ -136,14 +138,14 @@ vagalume.app/
 │   ├── Valoraciones y comentarios
 │   └── Botón reservar
 │
+├── /reservar/:id            → Formulario de reserva con mensaje opcional
 ├── /registro                → Crear cuenta (huésped o anfitrión)
 ├── /login                   → Iniciar sesión
 │
 └── /dashboard               → Panel de usuario (privado)
-    ├── /mis-reservas        → Reservas como huésped
+    ├── /mis-reservas        → Reservas como huésped + chat por reserva
     ├── /mis-propiedades     → Propiedades publicadas (anfitrión)
-    ├── /nueva-propiedad     → Formulario alta propiedad
-    └── /perfil              → Datos personales + cerrar sesión
+    └── /nueva-propiedad     → Formulario alta propiedad
 ```
 
 ---
@@ -152,80 +154,99 @@ vagalume.app/
 
 ### 6.1 Autenticación y usuarios
 
-| ID | Funcionalidad | Prioridad | Notas |
-|----|--------------|-----------|-------|
-| F-01 | Registro con email y contraseña | 🔴 Must | Requerido para publicar o reservar |
-| F-02 | Login / Logout | 🔴 Must | JWT en backend |
-| F-03 | Rol de usuario: huésped / anfitrión / dual | 🔴 Must | Seleccionable en registro |
+| ID | Funcionalidad | Estado | Notas |
+|----|--------------|--------|-------|
+| F-01 | Registro con email y contraseña | ✅ Completado | |
+| F-02 | Login / Logout | ✅ Completado | Sesiones con cookies |
+| F-03 | Rol de usuario: huésped / anfitrión / dual | ✅ Completado | Seleccionable en registro |
 
 ### 6.2 Propiedades
 
-| ID | Funcionalidad | Prioridad | Notas |
-|----|--------------|-----------|-------|
-| F-04 | Publicar propiedad (título, desc, fotos, precio, tipo) | 🔴 Must | Tipo: entera / habitación |
-| F-05 | Editar y eliminar propiedad | 🔴 Must | Solo el propietario |
-| F-06 | Búsqueda por fechas y ubicación (Rías) | 🔴 Must | Filtro básico |
-| F-07 | Filtros: precio, tipo, capacidad | 🟡 Should | |
-| F-08 | Galería de fotos (upload múltiple) | 🔴 Must | Min 3 fotos obligatorias |
-| F-09 | Mapa de ubicación | 🟢 Could | Leaflet.js o Google Maps — post-MVP |
+| ID | Funcionalidad | Estado | Notas |
+|----|--------------|--------|-------|
+| F-04 | Publicar propiedad (título, desc, fotos, precio, tipo) | ✅ Completado | |
+| F-05 | Editar y eliminar propiedad | ✅ Completado | Solo el propietario |
+| F-06 | Búsqueda por ría y filtros | ✅ Completado | Filtros: ría, capacidad, tipo, precio |
+| F-07 | Filtros: precio, tipo, capacidad | ✅ Completado | |
+| F-08 | Galería de fotos | ✅ Completado | Min 3 fotos obligatorias |
+| F-09 | Mapa de ubicación | 🟢 Post-MVP | Leaflet.js o Google Maps |
 
 ### 6.3 Reservas
 
-| ID | Funcionalidad | Prioridad | Notas |
-|----|--------------|-----------|-------|
-| F-10 | Solicitar reserva (fechas + nº huéspedes) | 🔴 Must | Solo usuarios registrados |
-| F-11 | Confirmación / rechazo por anfitrión | 🔴 Must | El anfitrión decide manualmente |
-| F-12 | Historial de reservas (huésped y anfitrión) | 🔴 Must | |
-| F-13 | Cancelación de reserva | 🟡 Should | Política simple |
-| F-14 | Pagos integrados | 🟠 TBD | A decidir — ver sección 9.1 |
+| ID | Funcionalidad | Estado | Notas |
+|----|--------------|--------|-------|
+| F-10 | Solicitar reserva (fechas + nº huéspedes + mensaje) | ✅ Completado | |
+| F-11 | Confirmación / rechazo por anfitrión | ✅ Completado | |
+| F-12 | Historial de reservas con filtro por estado | ✅ Completado | |
+| F-13 | Cancelación de reserva | ✅ Completado | |
+| F-14 | Validación de fechas (no duplicados por mismo guest) | ✅ Completado | |
+| F-15 | Pagos integrados | 🟢 Post-MVP | Ver sección 9.1 |
 
-### 6.4 Reseñas y valoraciones
+### 6.4 Mensajería
 
-| ID | Funcionalidad | Prioridad | Notas |
-|----|--------------|-----------|-------|
-| F-15 | Dejar comentario tras estancia | 🔴 Must | Solo si reserva completada |
-| F-16 | Valoración numérica 1 a 5 estrellas | 🔴 Must | |
-| F-17 | Media de valoraciones visible en ficha | 🔴 Must | |
-| F-18 | Respuesta del anfitrión a reseña | 🟢 Could | Post-MVP |
+| ID | Funcionalidad | Estado | Notas |
+|----|--------------|--------|-------|
+| F-16 | Mensaje inicial al reservar | ✅ Completado | Campo opcional en formulario de reserva |
+| F-17 | Chat entre guest y host por reserva | ✅ Completado | Disponible en dashboard de reservas |
+
+### 6.5 Reseñas y valoraciones
+
+| ID | Funcionalidad | Estado | Notas |
+|----|--------------|--------|-------|
+| F-18 | Dejar comentario tras estancia | ✅ Completado | |
+| F-19 | Valoración numérica 1 a 5 estrellas | ✅ Completado | |
+| F-20 | Media de valoraciones visible en ficha | ✅ Completado | |
+| F-21 | Respuesta del anfitrión a reseña | 🟢 Post-MVP | |
 
 ---
 
 ## 7. Flujos de usuario
 
-### 7.1 Flujo de reserva (Huésped)
+### 7.1 Flujo de búsqueda (sin cuenta)
 
 ```
-[Home] 
+[Home]
   │
   ▼
-[Buscar por fechas + ubicación]
+[Barra de búsqueda] → Destino (Ría) + Entrada + Salida + Viajeros
   │
   ▼
-[Ver resultados] ──filtros──▶ [Refinar búsqueda]
+[/buscar?ria=vigo&checkIn=...&checkOut=...&capacity=2]
   │
   ▼
+[Resultados filtrados]
+  │
+  ▼
+[Ficha de propiedad] → Fotos + Descripción + Reseñas + Precio
+```
+
+### 7.2 Flujo de reserva (Huésped)
+
+```
 [Ficha de propiedad]
   │
-  ├──▶ [Sin cuenta] ──▶ [Registro/Login] ──┐
-  │                                         │
-  └──▶ [Con cuenta] ──────────────────────▶│
-                                            │
-                                            ▼
-                                    [Formulario de reserva]
-                                    (fechas, nº huéspedes)
-                                            │
-                                            ▼
-                                    [Confirmación enviada]
-                                            │
-                                            ▼
-                              [Anfitrión acepta / rechaza]
-                                            │
-                                            ▼
-                                    [Reserva confirmada]
-                                  (email + dashboard)
+  ├──▶ [Sin cuenta] ──▶ [Login] ──┐
+  │                               │
+  └──▶ [Con cuenta] ─────────────▶│
+                                  ▼
+                          [/reservar/:id]
+                          ├── Fechas entrada/salida
+                          ├── Nº huéspedes
+                          ├── Mensaje para el anfitrión (opcional)
+                          └── Total calculado en tiempo real
+                                  │
+                                  ▼
+                          [Booking creado — status: pending]
+                                  │
+                                  ▼
+                          [Dashboard → Mis reservas]
+                          └── Chat disponible con el anfitrión
+                                  │
+                                  ▼
+                          [Anfitrión confirma / rechaza]
 ```
 
-### 7.2 Flujo de publicación (Anfitrión)
+### 7.3 Flujo de publicación (Anfitrión)
 
 ```
 [Login / Registro como Anfitrión]
@@ -234,13 +255,7 @@ vagalume.app/
 [Dashboard → "Nueva propiedad"]
   │
   ▼
-[Paso 1: Tipo] → Entera / Habitación
-  │
-  ▼
-[Paso 2: Detalles] → Título, descripción, capacidad, precio/noche
-  │
-  ▼
-[Paso 3: Fotos] → Upload mínimo 1 imagen
+[Formulario: tipo, título, descripción, capacidad, precio, fotos, ubicación]
   │
   ▼
 [Publicar] → Visible en buscador ✅
@@ -260,27 +275,29 @@ vagalume.app/
 │ name         String                          │
 │ email        String (unique)                 │
 │ password     String (hashed)                 │
-│ role         Enum: guest | host | dual | admin│
+│ role         Enum: guest | host | dual       │
 │ avatar       String (URL)                    │
 │ bio          String                          │
-│ createdAt    Date                            │
+│ createdAt    Date (auto)                     │
+│ updatedAt    Date (auto)                     │
 └─────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────  ┐
-│ PROPERTIES                                    │
-├─────────────────────────────────────────────  ┤
-│ _id          ObjectId                         │
-│ host         Ref → Users                      │
-│ title        String                           │
-│ description  String                           │
-│ type         Enum: entire | room              │
-│ location     { ria, address, coords }         │
-│ price        Number (€/noche)                 │
-│ capacity     Number (max huéspedes)           │
-│ photos       [String] (URLs)                  │
-│ rating       Number(gestionado por el cliente)|
-│ createdAt    Date                             │
-└─────────────────────────────────────────────  ┘
+┌─────────────────────────────────────────────┐
+│ PROPERTIES                                   │
+├─────────────────────────────────────────────┤
+│ _id          ObjectId                        │
+│ host         Ref → Users                     │
+│ title        String                          │
+│ description  String                          │
+│ type         Enum: entire | room             │
+│ location     { ria, address, coords }        │
+│ price        Number (€/noche)                │
+│ capacity     Number (max huéspedes)          │
+│ photos       [String] (URLs, min 3)          │
+│ rating       Number (calculado por reviews)  │
+│ createdAt    Date (auto)                     │
+│ updatedAt    Date (auto)                     │
+└─────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────┐
 │ BOOKINGS                                     │
@@ -293,7 +310,21 @@ vagalume.app/
 │ guests       Number                          │
 │ status       Enum: pending|confirmed|cancelled│
 │ totalPrice   Number                          │
-│ createdAt    Date                            │
+│ message      String (opcional)               │
+│ createdAt    Date (auto)                     │
+│ updatedAt    Date (auto)                     │
+└─────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────┐
+│ MESSAGES                                     │
+├─────────────────────────────────────────────┤
+│ _id          ObjectId                        │
+│ booking      Ref → Bookings                  │
+│ sender       Ref → Users                     │
+│ receiver     Ref → Users                     │
+│ text         String                          │
+│ createdAt    Date (auto)                     │
+│ updatedAt    Date (auto)                     │
 └─────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────┐
@@ -305,7 +336,8 @@ vagalume.app/
 │ booking      Ref → Bookings                  │
 │ rating       Number (1-5)                    │
 │ comment      String                          │
-│ createdAt    Date                            │
+│ createdAt    Date (auto)                     │
+│ updatedAt    Date (auto)                     │
 └─────────────────────────────────────────────┘
 ```
 
@@ -320,50 +352,56 @@ FRONTEND                    BACKEND
 ──────────────────────      ──────────────────────
 React (Vite)                Node.js + Express
 React Router v6             Mongoose (MongoDB)
-Axios / Fetch               JWT (jsonwebtoken)
-Context API / Zustand       Bcrypt (passwords)
-Tailwind CSS                Multer (file upload)
-React Calendar              Dotenv
+Axios                       express-session
+Context API                 Bcrypt (passwords)
+React Hook Form             http-errors
+Bootstrap 5                 Dotenv
 ```
 
 ### 9.2 Autenticación
 
-- JWT almacenado en `httpOnly cookie` o `localStorage`
+- Sesiones gestionadas con `express-session` y cookies HTTP
+- `withCredentials: true` en todas las peticiones del cliente
 - Middleware de autenticación en rutas protegidas
-- Roles verificados en backend (no solo frontend)
+- Roles verificados en backend mediante middleware `checkRole`
 
-### 9.3 API REST — Endpoints principales
+### 9.3 API REST — Endpoints
 
 ```
 AUTH
-  POST   /api/auth/register
-  POST   /api/auth/login
-  POST   /api/auth/logout
+  POST   /api/users               → registro
+  POST   /api/sessions            → login
+  DELETE /api/sessions            → logout
 
 USERS
-  GET    /api/users/:id
+  GET    /api/users/me            → perfil propio [privado]
+  GET    /api/users/:id           → perfil público
 
 PROPERTIES
-  GET    /api/properties             → búsqueda con query params
-  GET    /api/properties/:id
-  POST   /api/properties             → [host]
-  PUT    /api/properties/:id         → [host, owner]
-  DELETE /api/properties/:id         → [host, owner]
+  GET    /api/properties          → búsqueda con query params
+  GET    /api/properties/:id      → detalle
+  POST   /api/properties          → [host | dual]
+  PATCH  /api/properties/:id      → [host | dual, owner]
+  DELETE /api/properties/:id      → [host, owner]
 
 BOOKINGS
-  GET    /api/bookings/me            → mis reservas
-  POST   /api/bookings               → [guest]
-  PUT    /api/bookings/:id/status    → [host]
-  DELETE /api/bookings/:id           → [guest, host]
+  GET    /api/bookings/me         → mis reservas [?role=host]
+  POST   /api/bookings            → [guest | dual]
+  PUT    /api/bookings/:id/status → [host | dual]
+  DELETE /api/bookings/:id        → [guest | host | dual]
+
+MESSAGES
+  GET    /api/bookings/:id/messages  → [guest | host de la reserva]
+  POST   /api/bookings/:id/messages  → [guest | host de la reserva]
 
 REVIEWS
-  GET    /api/reviews/property/:id
-  POST   /api/reviews                → [guest, booking completed]
+  GET    /api/properties/:id/reviews → público
+  POST   /api/properties/:id/reviews → [guest | dual]
 ```
 
 ### 9.4 Pagos (pendiente de decisión)
 
-> ⚠️ **Estado:** Por definir. Opciones evaluadas:
+> ⚠️ **Estado:** Por definir. MVP lanzado sin pasarela de pago.
 
 | Opción | Pros | Contras |
 |--------|------|---------|
@@ -371,21 +409,18 @@ REVIEWS
 | Stripe | Estándar, bien documentado | Requiere cuenta empresa |
 | Pago externo (Bizum/transferencia) | Sin integración técnica | Mala UX, sin trazabilidad |
 
-**Recomendación:** Lanzar MVP sin pasarela de pago. Mostrar precio como referencia y gestionar pago offline. Integrar Stripe en v1.1.
+**Recomendación:** Integrar Stripe en v1.1.
 
 ---
 
 ## 10. Fuera de scope (MVP)
 
-Las siguientes funcionalidades quedan **explícitamente excluidas** del MVP y se consideran para versiones futuras:
-
-- [ ] Mensajería privada entre huésped y anfitrión
 - [ ] Panel de administración
-- [ ] Gestión de calendario de disponibilidad
+- [ ] Gestión de calendario de disponibilidad visual
 - [ ] Perfil editable (nombre, foto, bio)
 - [ ] Recuperación de contraseña por email
 - [ ] Interfaz en gallego (i18n)
-- [ ] Mapa interactivo de propiedades
+- [ ] Mapa interactivo de propiedades (Leaflet)
 - [ ] Sistema de pagos integrado (Stripe)
 - [ ] Notificaciones push / email automáticos
 - [ ] Verificación de identidad (KYC)
@@ -394,6 +429,7 @@ Las siguientes funcionalidades quedan **explícitamente excluidas** del MVP y se
 - [ ] Integración con calendarios externos (iCal, Google)
 - [ ] Dashboard de analíticas para anfitriones
 - [ ] Sistema de disputas / soporte
+- [ ] Chat en tiempo real (WebSockets)
 
 ---
 
@@ -416,43 +452,47 @@ Las siguientes funcionalidades quedan **explícitamente excluidas** del MVP y se
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- FASE 0 — Setup          [Días 1-2]
+ FASE 0 — Setup          ✅ Completado
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   ✓ Estructura del proyecto MERN
   ✓ Configuración MongoDB Atlas
-  ✓ Autenticación JWT (registro, login, logout)
-  ✓ Despliegue inicial (Render + Vercel)
+  ✓ Autenticación con sesiones (registro, login, logout)
+  ✓ Roles: guest, host, dual
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- FASE 1 — Core           [Días 3-8]
+ FASE 1 — Core           ✅ Completado
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  → CRUD de propiedades (publicar, editar, borrar)
-  → Buscador con filtros básicos
-  → Ficha de propiedad con fotos
-  → Sistema de reservas (solicitar, aceptar, rechazar)
-  → Dashboard: mis reservas + mis propiedades
+  ✓ CRUD de propiedades (publicar, editar, borrar)
+  ✓ Buscador con filtros (ría, capacidad, tipo, precio)
+  ✓ SearchPage con resultados
+  ✓ Ficha de propiedad con fotos
+  ✓ Sistema de reservas (solicitar, aceptar, rechazar)
+  ✓ Validación de reservas duplicadas por guest
+  ✓ Dashboard: mis reservas + mis propiedades
+  ✓ Filtro por estado en mis reservas
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- FASE 2 — Reviews + Presentación  [Días 9-14]
+ FASE 2 — Reviews + Mensajería  ✅ Completado
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  → Reseñas y valoraciones (1-5 estrellas)
-  → Media de valoraciones en ficha
-  → Pulido de UI y responsividad
-  → Testing manual de flujos principales
-  → Lanzamiento MVP 🚀
+  ✓ Reseñas y valoraciones (1-5 estrellas)
+  ✓ Media de valoraciones en ficha
+  ✓ Mensaje inicial al reservar
+  ✓ Chat guest ↔ host por reserva
+  ✓ Pulido de UI
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  v1.1 — Post-MVP         [Futuro]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   → Integración Stripe
-  → Mensajería privada
   → Mapa interactivo (Leaflet)
+  → Perfil editable
   → i18n (Gallego / Inglés)
   → Notificaciones por email
   → Panel de administración
+  → Chat en tiempo real (WebSockets)
 ```
 
 ---
 
-*Documento generado como especificación de producto para el MVP de Vagalume App.*  
+*Documento actualizado para la versión 1.2 del MVP de Vagalume App.*  
 *Revisar y actualizar en cada sprint. Versión viva.*
