@@ -34,6 +34,10 @@ const bookingsSchema = new mongoose.Schema(
       required: true,
 
     },
+    message: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true, // Añade automáticamente campos createdAt y updatedAt

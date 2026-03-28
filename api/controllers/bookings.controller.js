@@ -6,6 +6,7 @@
 import Booking from "../models/booking.model.js";
 import Property from "../models/property.model.js";
 import createError from "http-errors";
+import Message from "../models/message.model.js";
 
 /**
  * Listar mis reservas
@@ -49,7 +50,8 @@ export const create = async (req, res) => {
     //verifica que no existe ya una reserva confirmada que coincidan  con las fechas pedidas
     const conflict = await Booking.findOne({
         property: req.body.property,
-        status: "confirmed",
+        guest: req.session.user.id,
+        status: { $in: ["confirmed", "pending"] },
         checkIn: { $lt: new Date(req.body.checkOut) },
         checkOut: { $gt: new Date(req.body.checkIn) }
     });
@@ -57,7 +59,7 @@ export const create = async (req, res) => {
     if (conflict) {
         throw createError(400, "Property not available for these dates");
     }
-    
+
     const checkIn = new Date(req.body.checkIn);
     const checkOut = new Date(req.body.checkOut);
     const nights = Math.round((checkOut - checkIn) / 86400000);
@@ -68,6 +70,16 @@ export const create = async (req, res) => {
         guest: req.session.user.id,
         totalPrice,
     });
+
+    if (req.body.message) {
+        await Message.create({
+            booking: booking.id,
+            sender: req.session.user.id,
+            receiver: property.host,
+            text: req.body.message,
+        });
+    }
+
     res.status(201).json(booking);
 };
 
