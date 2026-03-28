@@ -47,7 +47,7 @@ Inspirada en el modelo de Airbnb pero con foco local, precios más accesibles y 
 
 | Home | Búsqueda | Reserva |
 |------|----------|---------|
-| ![home](#) | ![search](#) | ![booking](#) |
+| ![home](https://i.ibb.co/M5JJBKgq/home.jpg) | ![search](https://i.ibb.co/9mWwDGMD/foto.jpg) | ![booking](https://i.ibb.co/ZR2qpJB5/booking.jpg) |
 
 ---
 
