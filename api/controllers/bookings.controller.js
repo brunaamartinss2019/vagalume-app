@@ -48,16 +48,28 @@ export const create = async (req, res) => {
     }
 
     //verifica que no existe ya una reserva confirmada que coincidan  con las fechas pedidas
-    const conflict = await Booking.findOne({
+    const propertyConflict = await Booking.findOne({
         property: req.body.property,
-        guest: req.session.user.id,
-        status: { $in: ["confirmed", "pending"] },
+        status: "confirmed",
         checkIn: { $lt: new Date(req.body.checkOut) },
         checkOut: { $gt: new Date(req.body.checkIn) }
     });
 
-    if (conflict) {
+    if (propertyConflict) {
         throw createError(400, "Property not available for these dates");
+    }
+
+    // 2. Bloquea si el mismo guest ya tiene una reserva pending para esas fechas
+    const guestConflict = await Booking.findOne({
+        property: req.body.property,
+        guest: req.session.user.id,
+        status: "pending",
+        checkIn: { $lt: new Date(req.body.checkOut) },
+        checkOut: { $gt: new Date(req.body.checkIn) }
+    });
+
+    if (guestConflict) {
+        throw createError(400, "You already have a pending booking for these dates");
     }
 
     const checkIn = new Date(req.body.checkIn);
