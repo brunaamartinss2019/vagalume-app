@@ -3,7 +3,8 @@ import { useSearchParams, Link } from "react-router-dom";
 import { getProperties } from "../services/api-service";
 
 function SearchPage() {
-    const [searchParams] = useSearchParams();
+    const [maxPrice, setMaxPrice] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -30,6 +31,27 @@ function SearchPage() {
             <h2 className="mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
                 Resultados en {searchParams.get("ria") || "las Rías Baixas"}
             </h2>
+            <div className="d-flex align-items-center gap-3 mb-4">
+                <label className="fw-semibold mb-0">Precio máximo:</label>
+                <input
+                    type="number"
+                    placeholder="Ej: 150"
+                    value={maxPrice}
+                    min="0"
+                    onChange={(e) => {
+                        setMaxPrice(e.target.value);
+                        const params = Object.fromEntries(searchParams.entries());
+                        if (e.target.value) {
+                            params.maxPrice = e.target.value;
+                        } else {
+                            delete params.maxPrice;
+                        }   
+                        setSearchParams(params);
+                    }}
+                    style={{ borderRadius: '8px', border: '1px solid #ddd', padding: '6px 12px', width: '120px' }}
+                />
+                <span style={{ color: '#888' }}>€ / noche</span>
+            </div>
 
             {loading ? (
                 <div className="text-center py-5">
@@ -43,7 +65,7 @@ function SearchPage() {
                             <div key={property.id} className='col'>
                                 <Link to={`/propiedad/${property.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="card h-100 border-0 shadow-sm property-card">
-                                        
+
                                         {/* Foto */}
                                         <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '12px 12px 0 0', height: '220px' }}>
                                             {property.photos?.length > 0 && (
