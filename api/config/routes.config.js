@@ -4,6 +4,7 @@ import * as users from '../controllers/users.controller.js';
 import * as properties from '../controllers/properties.controller.js';
 import * as bookings from '../controllers/bookings.controller.js';
 import * as reviews from '../controllers/review.controller.js';
+import * as messages from '../controllers/messages.controller.js';
 import { checkRole } from "../middlewares/role.middleware.js";
 
 const router = Router();
@@ -29,6 +30,10 @@ router.get("/bookings/me", bookings.list);
 router.post("/bookings", checkRole("guest", "dual"), bookings.create);
 router.put("/bookings/:id/status", checkRole("host", "dual"), bookings.updateStatus);
 router.delete("/bookings/:id", bookings.remove);
+
+//Messages
+router.get("/bookings/:id/messages", messages.list);
+router.post("/bookings/:id/messages", messages.create);
 
 //Reviews
 router.get("/properties/:id/reviews", reviews.list);
