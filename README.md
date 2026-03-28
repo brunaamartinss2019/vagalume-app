@@ -1,6 +1,6 @@
 # 🌊 Vagalume App
 
-> *"Alójate en las Rías, como en casa." / "Stay in the Rías, just like home."*
+> *"Alójate en las Rías gallegas, como en casa." / "Stay in the Galician Rías, just like home."*
 
 **[🇪🇸 Español](#español) · [🇬🇧 English](#english)**
 
@@ -47,60 +47,7 @@ Inspirada en el modelo de Airbnb pero con foco local, precios más accesibles y 
 
 | Home | Búsqueda | Reserva |
 |------|----------|---------|
-| ![home](#) | ![search](#) | ![booking](#) |
-
----
-
-### 🚀 Instalación
-
-#### Requisitos
-- Node.js v18+
-- MongoDB (local o Atlas)
-
-#### Backend
-```bash
-cd api
-npm install
-cp .env.example .env   # configura tus variables de entorno
-npm run dev
-```
-
-#### Frontend
-```bash
-cd web
-npm install
-npm run dev
-```
-
-#### Variables de entorno (`.env`)
-```
-MONGODB_URI=mongodb://localhost:27017/vagalume
-SESSION_SECRET=tu_secreto_aqui
-PORT=3000
-```
-
----
-
-### 📁 Estructura del proyecto
-
-```
-vagalume-app/
-├── api/                        # Backend — Node.js + Express
-│   ├── config/                 # Rutas y configuración
-│   ├── controllers/            # Lógica de negocio
-│   ├── middlewares/            # Auth, roles, errores
-│   ├── models/                 # Esquemas Mongoose
-│   └── app.js
-│
-├── web/                        # Frontend — React + Vite
-│   └── src/
-│       ├── components/         # Navbar, Chat...
-│       ├── context/            # AuthContext
-│       ├── pages/              # Home, Search, Property, Dashboard...
-│       └── services/           # api-service.js
-│
-└── docs/                       # SPEC.md + API_DOCS.md
-```
+| ![home](https://i.ibb.co/M5JJBKgq/home.jpg) | ![search](https://i.ibb.co/9mWwDGMD/foto.jpg) | ![booking](https://i.ibb.co/ZR2qpJB5/booking.jpg) |
 
 ---
 
@@ -161,61 +108,7 @@ Inspired by Airbnb but with a local focus, more accessible prices and a close-kn
 
 | Home | Search | Booking |
 |------|--------|---------|
-| ![home](#) | ![search](#) | ![booking](#) |
-
----
-
-### 🚀 Getting Started
-
-#### Requirements
-- Node.js v18+
-- MongoDB (local or Atlas)
-
-#### Backend
-```bash
-cd api
-npm install
-cp .env.example .env   # set up your environment variables
-npm run dev
-```
-
-#### Frontend
-```bash
-cd web
-npm install
-npm run dev
-```
-
-#### Environment variables (`.env`)
-```
-MONGODB_URI=mongodb://localhost:27017/vagalume
-SESSION_SECRET=your_secret_here
-PORT=3000
-```
-
----
-
-### 📁 Project Structure
-
-```
-vagalume-app/
-├── api/                        # Backend — Node.js + Express
-│   ├── config/                 # Routes and config
-│   ├── controllers/            # Business logic
-│   ├── middlewares/            # Auth, roles, error handling
-│   ├── models/                 # Mongoose schemas
-│   └── app.js
-│
-├── web/                        # Frontend — React + Vite
-│   └── src/
-│       ├── components/         # Navbar, Chat...
-│       ├── context/            # AuthContext
-│       ├── pages/              # Home, Search, Property, Dashboard...
-│       └── services/           # api-service.js
-│
-└── docs/                       # SPEC.md + API_DOCS.md
-```
-
+| ![home](https://i.ibb.co/M5JJBKgq/home.jpg) | ![search](https://i.ibb.co/9mWwDGMD/foto.jpg) | ![booking](https://i.ibb.co/ZR2qpJB5/booking.jpg) |
 ---
 
 ### 📄 Documentation
