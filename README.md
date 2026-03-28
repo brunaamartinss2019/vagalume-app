@@ -1,6 +1,6 @@
 # 🌊 Vagalume App
 
-> *"Alójate en las Rías, como en casa." / "Stay in the Rías, just like home."*
+> *"Alójate en las Rías gallegas, como en casa." / "Stay in the Galician Rías, just like home."*
 
 **[🇪🇸 Español](#español) · [🇬🇧 English](#english)**
 
