@@ -45,8 +45,6 @@ Inspirada en el modelo de Airbnb pero con foco local, precios más accesibles y 
 
 ### 📸 Capturas
 
-> *(Añade aquí capturas o un gif de demo del proyecto)*
-
 | Home | Búsqueda | Reserva |
 |------|----------|---------|
 | ![home](#) | ![search](#) | ![booking](#) |
@@ -160,8 +158,6 @@ Inspired by Airbnb but with a local focus, more accessible prices and a close-kn
 ---
 
 ### 📸 Screenshots
-
-> *(Add screenshots or a demo gif here)*
 
 | Home | Search | Booking |
 |------|--------|---------|
