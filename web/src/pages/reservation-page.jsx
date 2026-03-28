@@ -11,55 +11,62 @@ function ReservationPage() {
     //Estado para guardar los datos de la propidad
     const [property, setProperty] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [error, setError] = useState("");
 
-    const { register, handleSubmit, watch, formState: { errors }} = useForm({ mode: 'all'});
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: 'all' });
     //cargamos la propiedad para mostrar el precio y los detalles
     useEffect(() => {
         async function fetchProperty() {
             const data = await getProperty(id);
-                setProperty(data);
-            }
-            fetchProperty();
-        }, [id]);
+            setProperty(data);
+        }
+        fetchProperty();
+    }, [id]);
 
-        //calculamos el precio total en tiempo real cuando cambian las fechas
-        const checkIn = watch("checkIn");
-        const checkOut = watch("checkOut");
+    //calculamos el precio total en tiempo real cuando cambian las fechas
+    const checkIn = watch("checkIn");
+    const checkOut = watch("checkOut");
 
-        useEffect(() => {
-            if (checkIn && checkOut && property) {
-                //calculamos el numero de noches entre check.in y check-out
-                const nights = Math.ceil(
-                    (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
-                );
-                if (nights > 0) {
-                    setTotalPrice(nights * property.price);
-                } else {
-                    setTotalPrice(0);
-                } 
-            }
-        }, [checkIn, checkOut, property]);
-
-        const handleReservation = async (data) => {
-            try {
-                await createBooking({
-                    property: id,
-                    checkIn: data.checkIn,
-                    checkOut: data.checkOut,
-                    guests: Number(data.guests),
-                    totalPrice,
-                });
-                //Redirigimos al dashboard de reserva tras confirmar
-                navigate("/dashboard/mis-reservas");
-            } catch (error) {
-                console.error("Error al crear la reserva", error);
+    useEffect(() => {
+        if (checkIn && checkOut && property) {
+            //calculamos el numero de noches entre check.in y check-out
+            const nights = Math.ceil(
+                (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
+            );
+            if (nights > 0) {
+                setTotalPrice(nights * property.price);
+            } else {
+                setTotalPrice(0);
             }
         }
+    }, [checkIn, checkOut, property]);
 
-        if (!property) return <></>;
+    const handleReservation = async (data) => {
+        try {
+            setError("");
+            await createBooking({
+                property: id,
+                checkIn: data.checkIn,
+                checkOut: data.checkOut,
+                guests: Number(data.guests),
+                totalPrice,
+                message: data.message,
+            });
+            //Redirigimos al dashboard de reserva tras confirmar
+            navigate("/dashboard/mis-reservas");
+        } catch (error) {
+            if (error.response?.status === 400) {
+                setError("Ya tienes una reserva para estas fechas en esta propiedad.");
+            } else {
+                setError("Error al crear la reserva. Inténtalo de nuevo.");
+            }
+        }
+    }
 
-        return(
-         <div className="d-flex justify-content-center align-items-center py-5">
+    if (!property) return <></>;
+
+    return (
+        <div className="d-flex justify-content-center align-items-center py-5">
             <div className="card border-0 shadow-sm p-4" style={{ width: '100%', maxWidth: '500px', borderRadius: '16px' }}>
 
                 {/* Resumen de la propiedad */}
@@ -134,6 +141,23 @@ function ReservationPage() {
                             <p className="mb-0" style={{ color: '#888', fontSize: '0.85rem' }}>
                                 {Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24))} noches × {property.price} €
                             </p>
+                        </div>
+                    )}
+
+                    {/* mensaje para el anfitrión */}
+                    <div className="mb-4">
+                        <label className="form-label fw-semibold"> Mensaje para el anfitrión <span style={{ color: '#888', fontWeight: '400' }} >(opcional)</span></label>
+                        <textarea
+                            rows={3}
+                            placeholder="Preséntate o pregunta lo que necesites..."
+                            className="form-control"
+                            {...register('message')}
+                        />
+                    </div>
+
+                    {error && (
+                        <div className="alert alert-danger" style={{ borderRadius: '8px' }}>
+                            {error}
                         </div>
                     )}
 
