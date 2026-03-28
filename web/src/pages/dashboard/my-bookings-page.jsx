@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getMyBookings, updateBookingStatus, deleteBooking } from "../../services/api-service";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/auth-context";
+import Chat from "../../components/chat";
 
 function MyBookingsPage() {
     const { user } = useAuth();
@@ -173,6 +174,9 @@ function MyBookingsPage() {
                             )}
                         </div>
                     </div>
+                       {bookings.status !== "cancelled" && (
+                            <Chat bookingId={bookings.id} />
+                        )}
                 </div>
             ))}
         </div>
