@@ -4,17 +4,14 @@ import { useEffect, useState } from "react";
 import { getProperty, createBooking } from "../services/api-service";
 
 function ReservationPage() {
-    //obtenemos el id de la propiedad de la URL
     const { id } = useParams();
     const navigate = useNavigate();
 
-    //Estado para guardar los datos de la propidad
     const [property, setProperty] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [error, setError] = useState("");
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: 'all' });
-    //cargamos la propiedad para mostrar el precio y los detalles
     useEffect(() => {
         async function fetchProperty() {
             const data = await getProperty(id);
@@ -23,13 +20,11 @@ function ReservationPage() {
         fetchProperty();
     }, [id]);
 
-    //calculamos el precio total en tiempo real cuando cambian las fechas
     const checkIn = watch("checkIn");
     const checkOut = watch("checkOut");
 
     useEffect(() => {
         if (checkIn && checkOut && property) {
-            //calculamos el numero de noches entre check.in y check-out
             const nights = Math.ceil(
                 (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
             );
@@ -52,7 +47,6 @@ function ReservationPage() {
                 totalPrice,
                 message: data.message,
             });
-            //Redirigimos al dashboard de reserva tras confirmar
             navigate("/dashboard/mis-reservas");
         } catch (error) {
             if (error.response?.status === 400) {
@@ -69,7 +63,6 @@ function ReservationPage() {
         <div className="d-flex justify-content-center align-items-center py-5">
             <div className="card border-0 shadow-sm p-4" style={{ width: '100%', maxWidth: '500px', borderRadius: '16px' }}>
 
-                {/* Resumen de la propiedad */}
                 <div className="d-flex gap-3 mb-4 align-items-center">
                     <img
                         src={property.photos?.[0]}
@@ -93,7 +86,6 @@ function ReservationPage() {
 
                 <form onSubmit={handleSubmit(handleReservation)}>
 
-                    {/* Check-in */}
                     <div className="mb-3">
                         <label className="form-label fw-semibold">Fecha de entrada</label>
                         <input
@@ -104,7 +96,6 @@ function ReservationPage() {
                         {errors.checkIn && <div className="invalid-feedback">{errors.checkIn.message}</div>}
                     </div>
 
-                    {/* Check-out */}
                     <div className="mb-3">
                         <label className="form-label fw-semibold">Fecha de salida</label>
                         <input
@@ -115,7 +106,6 @@ function ReservationPage() {
                         {errors.checkOut && <div className="invalid-feedback">{errors.checkOut.message}</div>}
                     </div>
 
-                    {/* Número de huéspedes */}
                     <div className="mb-4">
                         <label className="form-label fw-semibold">Número de huéspedes</label>
                         <input
@@ -132,7 +122,6 @@ function ReservationPage() {
                         {errors.guests && <div className="invalid-feedback">{errors.guests.message}</div>}
                     </div>
 
-                    {/* Precio total calculado */}
                     {totalPrice > 0 && (
                         <div className="alert" style={{ backgroundColor: '#f0f5ff', border: '1px solid #2563a8', borderRadius: '8px' }}>
                             <p className="mb-0" style={{ color: '#2563a8', fontWeight: '700' }}>
@@ -144,7 +133,6 @@ function ReservationPage() {
                         </div>
                     )}
 
-                    {/* mensaje para el anfitrión */}
                     <div className="mb-4">
                         <label className="form-label fw-semibold"> Mensaje para el anfitrión <span style={{ color: '#888', fontWeight: '400' }} >(opcional)</span></label>
                         <textarea

@@ -8,45 +8,37 @@ function MyBookingsPage() {
     const { user } = useAuth();
     const [bookings, setBookings] = useState([]);
 
-    //cargamos las reservas al montar el componente
     useEffect(() => {
         async function fetchBookings() {
             if (user.role === "host") {
-                //si es el host, cargamos las reservas recibidas en sus propiedades
                 const hostBookings = await getMyBookings("host");
                 setBookings(hostBookings);
             } else if (user.role === "dual") {
-                //si es dual, cargamos ambas
                 const guestBookings = await getMyBookings();
                 const hostBookings = await getMyBookings("host");
                 setBookings([...guestBookings, ...hostBookings]);
             } else {
-                //si es guest, solo sus reservas
                 const guestBookings = await getMyBookings();
                 setBookings(guestBookings);
             }
         }
         fetchBookings();
     }, []);
-    //confirmar o rechazar una reserva como host
 
     async function handleUpdateStatus(bookingId, status) {
         await updateBookingStatus(bookingId, status);
-        // Actualizamos el estado local sin recargar la página
         setBookings(bookings.map(b =>
             b.id === bookingId ? { ...b, status } : b
         ));
     }
-    //cancelar una reserva como guest
+   
     async function handleCancel(bookingId) {
         await deleteBooking(bookingId);
-        //actualizamos el estado local sin recargar la pagina
         setBookings(bookings.map(b =>
             b.id === bookingId ? { ...b, status: "cancelled" } : b
         ));
     }
 
-    //color del badge según el estado de la reserva
     function getStatusBadge(status) {
         const styles = {
             pending: { backgroundColor: '#fef3c7', color: '#92400e' },
@@ -87,7 +79,6 @@ function MyBookingsPage() {
                 <div key={bookings.id} className="card border-0 shadow-sm mb-3 p-3" style={{ borderRadius: '12px' }}>
                     <div className="d-flex gap-3 align-items-center">
 
-                        {/* Foto de la propiedad */}
                         {bookings.property?.photos?.[0] && (
                             <img
                                 src={bookings.property.photos[0]}
@@ -96,7 +87,6 @@ function MyBookingsPage() {
                             />
                         )}
 
-                        {/*Detalle de la reserva */}
                         <div className="flex-grow-1">
                             <div className="d-flex justify-content-between align-items-start">
                                 <h6 className="fw-bold mb-1">
@@ -120,9 +110,7 @@ function MyBookingsPage() {
                             </p>
                         </div>
 
-                        {/* Botones según el rol del usuario */}
                         <div className="d-flex flex-column gap-2">
-                            {/* Si es host y la reserva está pendiente, puede confirmar o rechazar */}
                             {user.role === "host" && bookings.status === "pending" && (
                                 <>
                                     <button
@@ -142,7 +130,6 @@ function MyBookingsPage() {
                                 </>
                             )}
 
-                            {/* Si es guest y la reserva no está cancelada, puede cancelar */}
                             {user.role === "guest" && bookings.status !== "cancelled" && (
                                 <button
                                     className="btn btn-sm"
@@ -153,7 +140,6 @@ function MyBookingsPage() {
                                 </button>
                             )}
 
-                            {/* Si es dual, puede confirmar/rechazar como host y cancelar como guest */}
                             {user.role === "dual" && bookings.status === "pending" && (
                                 <>
                                     <button

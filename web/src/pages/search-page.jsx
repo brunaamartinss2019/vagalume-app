@@ -9,7 +9,6 @@ function SearchPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Convertimos los parámetros de la URL (?ria=Aldan...) en objeto
         const params = Object.fromEntries(searchParams.entries());
 
         async function fetchProperties() {
@@ -66,7 +65,6 @@ function SearchPage() {
                                 <Link to={`/propiedad/${property.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     <div className="card h-100 border-0 shadow-sm property-card">
 
-                                        {/* Foto */}
                                         <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '12px 12px 0 0', height: '220px' }}>
                                             {property.photos?.length > 0 && (
                                                 <img
@@ -76,7 +74,6 @@ function SearchPage() {
                                                     className="property-img"
                                                 />
                                             )}
-                                            {/* Badge Ría */}
                                             <span style={{
                                                 position: 'absolute', top: '12px', left: '12px',
                                                 backgroundColor: '#2563a8', color: 'white',
@@ -87,7 +84,6 @@ function SearchPage() {
                                             </span>
                                         </div>
 
-                                        {/* Info */}
                                         <div className="card-body px-2 pt-3">
                                             <h5 className="card-title fw-bold mb-1" style={{ fontSize: '1rem' }}>
                                                 {property.title}
@@ -99,14 +95,12 @@ function SearchPage() {
                                                 👥 {property.capacity} huéspedes · 🏠 {property.type === 'entire' ? 'Completo' : 'Habitación'}
                                             </p>
 
-                                            {/* Rating */}
                                             {property.rating > 0 && (
                                                 <p style={{ fontSize: '0.85rem', marginBottom: '8px' }}>
                                                     ⭐ {property.rating.toFixed(1)}
                                                 </p>
                                             )}
 
-                                            {/* Precio */}
                                             <p style={{ margin: '0', fontWeight: '700', fontSize: '1.1rem', color: '#2563a8' }}>
                                                 {property.price} €
                                                 <span style={{ fontWeight: '400', fontSize: '0.85rem', color: '#888', marginLeft: '4px' }}>/ noche</span>

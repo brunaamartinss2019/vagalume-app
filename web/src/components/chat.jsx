@@ -12,7 +12,6 @@ function Chat({ bookingId }) {
         getMessages(bookingId).then(setMessages);
     }, [bookingId]);
 
-    // Scroll automático al último mensaje
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);

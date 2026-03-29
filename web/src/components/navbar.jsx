@@ -4,16 +4,12 @@ import { useState } from "react";
 
 function Navbar() { 
     const { user, userLogout } = useAuth();
-    //const dropDown = useRef();
     const navigate = useNavigate();
     const [destino, setDestino] = useState("");
     const [checkin, setCheckin] = useState("");
     const [checkout, setCheckout] = useState("");
     const [viajeros, setViajeros] = useState("");
 
-    /*useEffect(() => {
-        dropDown.current && new window.bootstrap.Dropdown(dropDown.current);
-    }, []);*/
 
     function handleSearch(e) {
         e.preventDefault();
@@ -41,12 +37,10 @@ function Navbar() {
             <div className="container-fluid px-4">
                 <div className="d-flex align-items-center justify-content-between w-100">
 
-                    {/* Logo */}
                     <Link to="/" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', fontWeight: '700', color: '#ffffff', textDecoration: 'none' }}>
                         🌊 Vagalume
                     </Link>
 
-                    {/* Buscador */}
                     <form onSubmit={handleSearch} className="d-flex align-items-center" style={{
                         border: 'none',
                         borderRadius: '40px',
@@ -108,7 +102,6 @@ function Navbar() {
                         </button>
                     </form>
 
-                    {/* Usuario */}
                     <div className="d-flex align-items-center gap-3">
                         {!user ? (
                             <>
@@ -123,7 +116,6 @@ function Navbar() {
                                     href="#"
                                     role="button"
                                     data-bs-toggle="dropdown"
-                                    //ref={dropDown}
                                     >
                                 
                                     {user.name}
@@ -154,76 +146,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-
-
-// import { Link } from "react-router-dom";
-    // import { useAuth } from "../context/auth-context";
-    // import { useEffect, useRef } from "react";
-
-    //     const { user, userLogout } = useAuth();
-    //     const dropDown = useRef();
-
-    //     useEffect(() => {
-    //         dropDown.current && new window.bootstrap.Dropdown(dropDown.current);
-    //     }, []);
-    // return (
-    //     <nav className="navbar navbar-expand-lg navbar-vagalume shadow-sm">
-    //     <div className="container">
-    //         <Link className="navbar-brand navbar-brand-vagalume" to="/">
-    //         🌊 Vagalume 
-    //         </Link>
-
-    //         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-    //         <span className="navbar-toggler-icon"></span>
-    //         </button>
-
-    //         <div className="collapse navbar-collapse" id="navbarNav">
-    //         <ul className="navbar-nav me-auto">
-    //             <li className="nav-item">
-    //             <Link className="nav-link nav-link-vagalume fw-bold" to="/buscar">Buscar alojamiento</Link>
-    //             </li>
-    //         </ul>
-
-    //         <div className="d-flex align-items-center gap-3">
-    //             {!user ? (
-    //             <>
-    //                 <Link to="/login" className="btn btn-outline-primary fw-bold">Acceder</Link>
-    //                 <Link to="/registro" className="btn btn-primary fw-bold">Registrarse</Link>
-    //             </>
-    //             ) : (
-    //             <div className="dropdown">
-                    
-    //                 className="btn btn-outline-primary fw-bold dropdown-toggle"
-    //                 href="#"
-    //                 role="button"
-    //                 data-bs-toggle="dropdown"
-    //                 ref={dropDown}
-    //                 <a>
-    //                 {user.name}
-    //                 </a>
-    //                 <ul className="dropdown-menu dropdown-menu-end">
-    //                 <li>
-    //                     <Link className="dropdown-item" to="/dashboard/reservas">Mis reservas</Link>
-    //                 </li>
-    //                 {(user.role === "host" || user.role === "dual") && (
-    //                     <li>
-    //                     <Link className="dropdown-item" to="/dashboard/propiedades">Mis propiedades</Link>
-    //                     </li>
-    //                 )}
-    //                 <li><hr className="dropdown-divider" /></li>
-    //                 <li>
-    //                     <button className="dropdown-item text-danger" onClick={userLogout}>
-    //                     Cerrar sesión
-    //                     </button>
-    //                 </li>
-    //                 </ul>
-    //             </div>
-    //             )}
-    //         </div>
-    //         </div>
-    //     </div>
-    //     </nav>
-    // );
-
-    // export default Navbar;

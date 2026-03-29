@@ -20,7 +20,6 @@ function LoginPage() {
         <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
             <div className="card border-0 shadow-sm p-4" style={{ width: '100%', maxWidth: '420px', borderRadius: '16px' }}>
                 
-                {/* Logo */}
                 <div className="text-center mb-4">
                     <h2 style={{ fontFamily: 'Playfair Display, serif', color: '#2563a8', fontWeight: '700' }}>
                         🌊 Vagalume
