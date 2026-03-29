@@ -4,18 +4,16 @@ const sessionSchema = new mongoose.Schema(
     {
         user: {
             type: mongoose.Types.ObjectId,
-            ref: "User", // Permite usar .populate("user") para obtener los datos completos del usuario
+            ref: "User", 
         },
     },
     {
-        timestamps: true, // Añade automáticamente campos createdAt y updatedAt
-        versionKey: false, // Desactiva el campo __v de versionado de Mongoose
-        // Configuración de serialización JSON del documento
+        timestamps: true, 
+        versionKey: false, 
         toJSON: {
-            virtuals: true, // Incluye campos virtuales (como "id") en la salida JSON
-            // Función de transformación para limpiar el JSON de salida
+            virtuals: true, 
             transform: function (doc, ret) {
-                delete ret._id; // Elimina el _id nativo de MongoDB (se usa el virtual "id" en su lugar)
+                delete ret._id; 
             },
         },
     },

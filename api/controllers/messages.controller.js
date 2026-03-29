@@ -2,10 +2,6 @@ import Message from "../models/message.model.js";
 import Booking from "../models/booking.model.js";
 import createError from "http-errors";
 
-/**
- * Listar mensajes de una reserva
- * GET /api/bookings/:id/messages
- */
 export const list = async (req, res) => {
     const booking = await Booking.findById(req.params.id).populate("property");
 
@@ -24,10 +20,6 @@ export const list = async (req, res) => {
     res.json(messages);
 };
 
-/**
- * Enviar un mensaje en una reserva
- * POST /api/bookings/:id/messages
- */
 export const create = async (req, res) => {
     const booking = await Booking.findById(req.params.id).populate("property");
 
