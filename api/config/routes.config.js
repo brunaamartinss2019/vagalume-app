@@ -29,7 +29,7 @@ router.delete("/properties/:id", checkRole("host", "dual"), properties.remove);
 router.get("/bookings/me", bookings.list);
 router.post("/bookings", checkRole("guest", "dual"), bookings.create);
 router.put("/bookings/:id/status", checkRole("host", "dual"), bookings.updateStatus);
-router.delete("/bookings/:id", bookings.remove);
+router.delete("/bookings/:id", bookings.cancel);
 
 //Messages
 router.get("/bookings/:id/messages", messages.list);
