@@ -89,7 +89,7 @@ export const updateStatus = async (req, res) => {
     res.json(booking);
 };
 
-export const remove = async (req, res) => {
+export const cancel = async (req, res) => {
     const booking = await Booking.findByIdAndUpdate(
         req.params.id,
         { status: "cancelled" },

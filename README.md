@@ -42,7 +42,27 @@ Inspirada en el modelo de Airbnb pero con foco local, precios más accesibles y 
 ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
 
 ---
+### 🚀 Instalación y uso local
 
+1. Clona el repositorio
+```bash
+   git clone https://github.com/brunaamartinss2019/vagalume-app.git
+```
+
+2. Configura las variables de entorno
+```bash
+   cd api
+   cp .env.example .env   # rellena con tus valores
+```
+
+3. Instala dependencias y arranca
+```bash
+   # Backend (puerto 3000)
+   cd api && npm install && npm run dev
+
+   # Frontend (puerto 5173)
+   cd web && npm install && npm run dev
+```
 ### 📸 Capturas
 
 | Home | Búsqueda | Reserva |
@@ -103,7 +123,27 @@ Inspired by Airbnb but with a local focus, more accessible prices and a close-kn
 ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
 
 ---
+### 🚀 Installation & local setup
 
+1. Clone the repository
+```bash
+   git clone https://github.com/brunaamartinss2019/vagalume-app.git
+```
+
+2. Set up environment variables
+```bash
+   cd api
+   cp .env.example .env   # fill in your values
+```
+
+3. Install dependencies and run
+```bash
+   # Backend (port 3000)
+   cd api && npm install && npm run dev
+
+   # Frontend (port 5173)
+   cd web && npm install && npm run dev
+```
 ### 📸 Screenshots
 
 | Home | Search | Booking |

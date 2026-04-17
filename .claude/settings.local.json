@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(fly secrets:*)",
+      "Bash(fly apps:*)"
+    ]
+  }
+}

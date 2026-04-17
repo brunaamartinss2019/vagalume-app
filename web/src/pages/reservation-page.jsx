@@ -44,7 +44,6 @@ function ReservationPage() {
                 checkIn: data.checkIn,
                 checkOut: data.checkOut,
                 guests: Number(data.guests),
-                totalPrice,
                 message: data.message,
             });
             navigate("/dashboard/mis-reservas");

@@ -29,6 +29,9 @@ export const create = async (req, res) => {
         ...req.body,
         author: req.session.user.id,
     });
+    const reviews = await Review.find({ property: req.body.property });
+    const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    await Property.findByIdAndUpdate(req.body.property, { rating: avgRating });
 
     res.status(201).json(review);
 };

@@ -20,13 +20,8 @@ export const list = async (req, res) => {
     if (ria) {
         filter["location.ria"] = new RegExp(ria, "i");
     }
-
-    try {
-        const properties = await Property.find(filter).populate("host");
-        res.json(properties);
-    } catch (error) {
-        res.status(500).json({message: "Error al buscar propiedades" });
-    }
+    const properties = await Property.find(filter).populate("host");
+    res.json(properties);
 };
 
 export const detail = async (req, res) => {
@@ -48,20 +43,20 @@ export const create = async (req, res) => {
 };
 
 export const update = async (req, res) => {
-    const property = await Property.findById(req.params.id);   
+    const property = await Property.findById(req.params.id);
 
     if (property === null) {
-        throw createError(404, "Property not found"); 
+        throw createError(404, "Property not found");
     }
 
-    if (property.host.toString() !== req.session.user.id) { 
-     
+    if (property.host.toString() !== req.session.user.id) {
+
         throw createError(403, "Forbidden");
     }
 
     const update = await Property.findByIdAndUpdate(req.params.id, req.body, {
-        new: true, 
-        runValidators: true, 
+        new: true,
+        runValidators: true,
     });
 
     res.json(update);
